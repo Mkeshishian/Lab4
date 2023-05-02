@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 public class Driver {
@@ -30,19 +32,23 @@ public class Driver {
         stmt.close();
         conn.close();
     }
-    public void displayWeeklySchedule(Scanner scanner) throws SQLException {
+    public void displayWeeklySchedule(Scanner scanner) throws SQLException, ParseException {
         System.out.print("Enter the DriverName: ");
-        String driverName = scanner.next();
+        String driverName = scanner.nextLine();
         System.out.print("Enter the start date (yyyy-MM-dd): ");
-        String startDateStr = scanner.next();
+        String startDateStr = scanner.nextLine();
         System.out.print("Enter the end date (yyyy-MM-dd): ");
-        String endDateStr = scanner.next();
+        String endDateStr = scanner.nextLine();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date startDate = sdf.parse(startDateStr);
+        java.util.Date endDate = sdf.parse(endDateStr);
 
         Connection conn = DatabaseConnection.getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM TripOffering WHERE DriverName = ? AND Date BETWEEN ? AND ? ORDER BY Date, ScheduledStartTime");
         stmt.setString(1, driverName);
-        stmt.setDate(2, java.sql.Date.valueOf(startDateStr));
-        stmt.setDate(3, java.sql.Date.valueOf(endDateStr));
+        stmt.setDate(2, new java.sql.Date(startDate.getTime()));
+        stmt.setDate(3, new java.sql.Date(endDate.getTime()));
 
         ResultSet rs = stmt.executeQuery();
         System.out.println("\nWeekly schedule for Driver: " + driverName);
@@ -58,5 +64,6 @@ public class Driver {
         stmt.close();
         conn.close();
     }
+
 }
 
