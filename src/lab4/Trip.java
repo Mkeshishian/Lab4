@@ -37,9 +37,9 @@ public class Trip {
     }
     public void displaySchedule(Scanner scanner) throws SQLException {
         System.out.print("Enter the StartLocationName: ");
-        String startLocationName = scanner.next();
-        System.out.print("Enter the DestinationName: ");
-        String destinationName = scanner.next();
+        String startLocationName = scanner.nextLine();
+        System.out.print("Enter the DestinationName: "); 
+        String destinationName = scanner.nextLine();
         System.out.print("Enter the Date (yyyy-MM-dd): ");
         String dateStr = scanner.next();
 
@@ -63,4 +63,5 @@ public class Trip {
         stmt.close();
         conn.close();
     }
+
 }
