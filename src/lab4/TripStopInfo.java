@@ -63,5 +63,3 @@ public class TripStopInfo {
         conn.close();
     }
 }
-
-
